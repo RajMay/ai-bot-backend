@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
-
+import uvicorn
 import os
 from dotenv import load_dotenv
 
@@ -17,6 +17,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def root():
+    return {"message": "Bot is running 🚀"}
 
 # config
 DATA_PATH = r"data"
@@ -101,3 +105,7 @@ async def chat(req: ChatRequest):
 
     response = llm.invoke(rag_prompt)
     return {"reply": response.content}
+
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Render provides PORT
+    uvicorn.run("chatbot:app", host="0.0.0.0", port=port, reload=False)
