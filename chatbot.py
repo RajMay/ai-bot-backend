@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_chroma import Chroma
-import gradio as gr
+
 import os
 from dotenv import load_dotenv
 
@@ -43,7 +43,7 @@ vector_store = Chroma(
 )
 
 # retriever
-retriever = vector_store.as_retriever(search_kwargs={'k': 2})
+retriever = vector_store.as_retriever(search_kwargs={'k': 3})
 
 
 
